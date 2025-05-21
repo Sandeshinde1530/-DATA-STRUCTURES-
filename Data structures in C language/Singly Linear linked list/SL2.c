@@ -145,15 +145,15 @@ int main()
     iRet = Count(first);
     printf("No. of nodes are : %d\n",iRet);
    
-    DeleteFirst(&first);
-    Display(first);
-    iRet = Count(first);
-    printf("No. of nodes are : %d\n",iRet);
+    // DeleteFirst(&first);
+    // Display(first);
+    // iRet = Count(first);
+    // printf("No. of nodes are : %d\n",iRet);
     
-    DeleteLast(&first);
-    Display(first);
-    iRet = Count(first);
-    printf("No. of nodes are : %d\n",iRet);
+    // DeleteLast(&first);
+    // Display(first);
+    // iRet = Count(first);
+    // printf("No. of nodes are : %d\n",iRet);
 
     return 0;
 }
