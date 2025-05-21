@@ -16,7 +16,7 @@ void InsertFirst(PPNODE head , int no)
     PNODE newn = (PNODE)malloc(sizeof(NODE));
 
     newn->data = no;
-    newn->next =NULL;
+    newn->next = NULL;
 
     if(*head == NULL)
     {
@@ -25,9 +25,8 @@ void InsertFirst(PPNODE head , int no)
     else
     {
         newn->next = *head;
-        *head = newn;
+        *head = newn;        
     }
-
 }
 
 void InsertLast(PPNODE head , int no)
@@ -36,7 +35,7 @@ void InsertLast(PPNODE head , int no)
     PNODE temp = NULL;
 
     newn->data = no;
-    newn->next =NULL;
+    newn->next = NULL;
 
     if(*head == NULL)
     {
@@ -45,115 +44,108 @@ void InsertLast(PPNODE head , int no)
     else
     {
         temp = *head;
-        while(temp->next != NULL)
+        while(temp->next!= NULL)
         {
             temp = temp->next;
         }
         temp->next = newn;
     }
-
 }
 
 void Display(PNODE head)
 {
-    PNODE temp = head;
-
-    while(temp != NULL)
+    while(head != NULL)
     {
-        printf("| %d |->",temp->data);
-        temp = temp->next;
+        printf("| %d |->",head->data);
+        head = head->next;
     }
     printf("NULL\n");
 }
 
 int Count(PNODE head)
 {
-    PNODE temp = head;
     int iCount = 0;
-
-    while(temp != NULL)
+    while(head != NULL)
     {
-        temp = temp->next;
+        head = head->next;
         iCount++;
     }
     return iCount;
 }
 
-void DeleteFirst(PPNODE head)
+void DeleteFirst(PPNODE head )
 {
     PNODE temp = NULL;
-
-    if(*head ==NULL)
+    if(*head == NULL)
     {
         return;
     }
-    else if((*head)->next ==NULL)
+    else if((*head)->next == NULL)
     {
-        free(*head);
-        *head=NULL;
+        free((*head));
+        *head = NULL;
     }
     else
     {
         temp = *head;
-
         *head = temp->next;
         free(temp);
-    }    
+    }
 }
 
-void DeleteLast(PPNODE head)
+
+void DeleteLast(PPNODE head )
 {
     PNODE temp = NULL;
-
-    if(*head ==NULL)
+     if(*head == NULL)
     {
         return;
     }
-    else if((*head)->next ==NULL)
+    else if((*head)->next == NULL)
     {
-        free(*head);
-        *head=NULL;
+        free((*head));
+        *head = NULL;
     }
     else
     {
-        temp =*head;
+        temp = *head;
         while(temp->next->next !=NULL)
         {
             temp = temp->next;
         }
         free(temp->next);
         temp->next = NULL;
-    }    
+    }
 }
-
-
 
 int main()
 {
     PNODE first = NULL;
-    int iRet = 0;
 
-    InsertFirst(&first,51);
-    InsertFirst(&first,21);
-    InsertFirst(&first,11);
+    InsertFirst(&first ,51);
+    InsertFirst(&first ,21);
+    InsertFirst(&first ,11);
+
     Display(first);
-    iRet = Count(first);
-    printf("No. of nodes are : %d\n",iRet);
+    int iRet = Count(first);
+    printf("NO. of values are : %d\n",iRet);
     
     InsertLast(&first,101);
+    InsertLast(&first,111);
+    InsertLast(&first,121);
+    Display(first);
+     iRet = Count(first);
+    printf("NO. of values are : %d\n",iRet);
+
+    DeleteFirst(&first);
     Display(first);
     iRet = Count(first);
-    printf("No. of nodes are : %d\n",iRet);
-   
-    // DeleteFirst(&first);
-    // Display(first);
-    // iRet = Count(first);
-    // printf("No. of nodes are : %d\n",iRet);
+    printf("NO. of values are : %d\n",iRet);
     
-    // DeleteLast(&first);
-    // Display(first);
-    // iRet = Count(first);
-    // printf("No. of nodes are : %d\n",iRet);
+    DeleteLast(&first);
+    Display(first);
+    iRet = Count(first);
+    printf("NO. of values are : %d\n",iRet);
 
     return 0;
 }
