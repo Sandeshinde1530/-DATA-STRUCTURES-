@@ -1,4 +1,4 @@
-// complete this in 26.19 mins
+// completed in 24.30 mins
 #include<iostream>
 
 using namespace std;
@@ -6,132 +6,129 @@ using namespace std;
 typedef struct node
 {
     int data;
+    struct node *prev;
     struct node *next;
-}NODE , *PNODE , **PPNODE;
+} NODE , *PNODE , **PPNODE;
 
-class SinglyCL
+class DoublyLL
 {
     public:
         int iCount;
         PNODE head;
-        PNODE tail;
 
-        SinglyCL()
+        DoublyLL()
         {
             iCount = 0;
             head = NULL;
-            tail = NULL;
         }
 
 
         void InsertFirst(int no)
         {
             PNODE newn = NULL;
-
-            newn  = (PNODE)malloc(sizeof(NODE));
+            newn = (PNODE)malloc(sizeof(NODE));
             newn->data = no;
             newn->next = NULL;
+            newn->prev = NULL;
 
-            if(head == NULL && tail == NULL)
+            if(head == NULL)
             {
-                head = newn;
-                tail = newn;
-            }
-            else if(head == tail)
-            {
-                newn->next = tail;
                 head = newn;
             }
             else
-            {   
+            {
                 newn->next = head;
+                head->prev = newn;
                 head = newn;
             }
-            tail->next = head;
+            
             iCount++;
-
         }
 
         void InsertLast(int no)
         {
             PNODE newn = NULL;
-
-            newn  = (PNODE)malloc(sizeof(NODE));
+            newn = (PNODE)malloc(sizeof(NODE));
             newn->data = no;
             newn->next = NULL;
+            newn->prev = NULL;
 
-            if(head == NULL && tail == NULL)
+            if(head == NULL)
             {
                 head = newn;
-                tail = newn;
             }
             else
-            {   
-                tail->next = newn;
-                tail  = newn;
+            {
+                PNODE temp = head;
+
+                while(temp->next != NULL)
+                {
+                    temp = temp->next;
+                }
+                temp->next = newn;
+                newn->prev = temp;
             }
-            tail->next = head;
+
             iCount++;
         }
 
         void DeleteFirst()
         {
-             if(head == NULL && tail == NULL)
+            if(head == NULL)
             {
                 return;
             }
-            else if(head == tail)
+            else if(head->next == NULL)
             {
-               free(head);
-               head = NULL;
-               tail = NULL;
+                free(head);
+                head = NULL;
             }
             else
-            {   
-               head = head->next;
-               free(tail->next);
+            {
+                head = head->next;
+                free(head->prev);
+                head->prev = NULL;
             }
-            tail->next = head;
+
             iCount--;
         }
 
         void DeleteLast()
         {
-            if(head == NULL && tail == NULL)
+            if(head == NULL)
             {
                 return;
             }
-            else if(head == tail)
+            else if(head->next == NULL)
             {
-               free(head);
-               head = NULL;
-               tail = NULL;
+                free(head);
+                head = NULL;
             }
             else
-            {   
+            {
                 PNODE temp = head;
 
-                while(temp->next != tail)
+                while(temp->next->next != NULL)
                 {
                     temp = temp->next;
                 }
-                free(tail);
-                tail = temp;
+                free(temp->next);
+                temp->next = NULL;
             }
-            tail->next = head;
+
             iCount--;
         }
-        
+
         void Display()
         {
             PNODE temp = head;
 
-            do{
-                printf("| %d | ->",temp->data);
+            while(temp != NULL)
+            {
+                cout<<" | "<<temp->data<<" |<=>";
                 temp = temp->next;
-            }while(temp != tail->next);
-
-            printf("\n");
+            }
+            cout<<"\n";
         }
 
         int Count()
@@ -143,8 +140,7 @@ class SinglyCL
         {
             if(iPos < 1 || iPos > iCount + 1)
             {
-                printf("Invalid Position\n");
-                return;
+                cout<<"invalid Position\n";
             }
             else if(iPos == 1)
             {
@@ -156,31 +152,34 @@ class SinglyCL
             }
             else
             {
-                PNODE temp = head;
-                PNODE newn = NULL;
-                int i = 0;
-
+                 PNODE newn = NULL;
                 newn = (PNODE)malloc(sizeof(NODE));
                 newn->data = no;
                 newn->next = NULL;
+                newn->prev = NULL;
 
-                for(i = 1 ; i< iPos - 1 ;i++)
+                PNODE temp = head;
+
+                for(int i = 1 ; i< iPos - 1 ; i++)
                 {
                     temp = temp->next;
                 }
 
                 newn->next = temp->next;
+                temp->next->prev = newn;
+
+                newn->prev = temp;
                 temp->next = newn;
             }
+            
             iCount++;
         }
 
         void DeleteAtPos(int iPos)
         {
-            if(iPos < 1 || iPos > iCount)
+             if(iPos < 1 || iPos > iCount)
             {
-                printf("Invalid Position\n");
-                return;
+                cout<<"invalid Position\n";
             }
             else if(iPos == 1)
             {
@@ -192,62 +191,65 @@ class SinglyCL
             }
             else
             {
+                
                 PNODE temp = head;
                 PNODE target = NULL;
-                int i = 0;
 
-                for(i = 1 ; i< iPos - 1 ;i++)
+                for(int i = 1 ; i< iPos - 1 ; i++)
                 {
                     temp = temp->next;
                 }
                 target = temp->next;
 
                 temp->next = target->next;
-                free(target);                
+                target->next->prev = temp;
+
+                free(target);
             }
             iCount--;
         }
+
 };
 
 int main()
 {
-    SinglyCL sobj;
-
+    DoublyLL dobj;
     int iRet = 0;
 
-    sobj.InsertFirst(30);
-    sobj.InsertFirst(20);
-    sobj.InsertFirst(10);
-    sobj.Display();
-    iRet = sobj.Count();
-    printf("COunt is :%d\n",iRet);
+    dobj.InsertFirst(30);
+    dobj.InsertFirst(20);
+    dobj.InsertFirst(10);
+    dobj.Display();
+    iRet =dobj.Count();
+    cout<<"NO. of nodes are:"<<iRet<<endl;
 
-    sobj.InsertLast(40);
-    sobj.InsertLast(50);
-    sobj.InsertLast(60);
-    sobj.Display();
-    iRet = sobj.Count();
-    printf("COunt is :%d\n",iRet);
+    dobj.InsertLast(40);
+    dobj.InsertLast(50);
+    dobj.InsertLast(60);
+    dobj.Display();
+    iRet =dobj.Count();
+    cout<<"NO. of nodes are:"<<iRet<<endl;
     
-    sobj.InsertAtPos(55 , 6);
-    sobj.Display();
-    iRet = sobj.Count();
-    printf("COunt is :%d\n",iRet);
+    dobj.InsertAtPos(45 , 5);
+    dobj.Display();
+    iRet =dobj.Count();
+    cout<<"NO. of nodes are:"<<iRet<<endl;
     
-    sobj.DeleteAtPos(6);
-    sobj.Display();
-    iRet = sobj.Count();
-    printf("COunt is :%d\n",iRet);
+    dobj.DeleteAtPos(5);
+    dobj.Display();
+    iRet =dobj.Count();
+    cout<<"NO. of nodes are:"<<iRet<<endl;
     
-    sobj.DeleteFirst();
-    sobj.Display();
-    iRet = sobj.Count();
-    printf("COunt is :%d\n",iRet);
+    dobj.DeleteFirst();
+    dobj.Display();
+    iRet =dobj.Count();
+    cout<<"NO. of nodes are:"<<iRet<<endl;    
     
-    sobj.DeleteLast();
-    sobj.Display();
-    iRet = sobj.Count();
-    printf("COunt is :%d\n",iRet);
+    dobj.DeleteLast();
+    dobj.Display();
+    iRet =dobj.Count();
+    cout<<"NO. of nodes are:"<<iRet<<endl;
 
     return 0;
 }
+
