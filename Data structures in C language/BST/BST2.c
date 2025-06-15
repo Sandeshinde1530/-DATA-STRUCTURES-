@@ -1,4 +1,4 @@
-//30.21 Mins;
+//25.19 mins
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdbool.h>
@@ -8,22 +8,24 @@ typedef struct node
     int data;
     struct node *lchild;
     struct node *rchild;
-}NODE , *PNODE , **PPNODE;
+}NODE,*PNODE , **PPNODE;
 
-void Insert(PPNODE head ,  int no)
+void Insert(PPNODE head , int no)
 {
-    PNODE newn =NULL;
+    PNODE newn = NULL;
     newn = (PNODE)malloc(sizeof(NODE));
     newn->data = no;
     newn->lchild = NULL;
     newn->rchild = NULL;
 
-    if(*head == NULL)
+    if(*head ==NULL)
     {
-        *head  = newn;
+        *head = newn;
     }
     else
-    {PNODE temp = *head;
+    {
+        PNODE temp = *head;
+
         while(1)
         {
             if(no > temp->data)
@@ -33,11 +35,11 @@ void Insert(PPNODE head ,  int no)
                     temp->rchild = newn;
                     break;
                 }
-                temp = temp->rchild;
+                temp = temp-> rchild;
             }
-            else if(no < temp->data)
+            else if(no< temp->data)
             {
-                if(temp->lchild ==NULL)
+                if(temp->lchild == NULL)
                 {
                     temp->lchild = newn;
                     break;
@@ -46,13 +48,35 @@ void Insert(PPNODE head ,  int no)
             }
             else if(no == temp->data)
             {
-                printf("Unable to Insert As value is duplicate\n");
+                printf("Unable to insert as the no is duplicate\n");
                 free(newn);
                 break;
             }
-
         }
     }
+}
+
+bool Search(PNODE head , int no)
+{
+    bool bFlag = false;
+
+    while(head != NULL)
+    {
+        if( no == head->data)
+        {
+            bFlag = true;
+            break;
+        }
+        else if(no > head->data)
+        {
+            head = head->rchild;
+        }
+        else if(no < head->data)
+        {
+            head = head->lchild;
+        }
+    }
+    return bFlag;
 }
 
 void Inorder(PNODE head)
@@ -60,16 +84,17 @@ void Inorder(PNODE head)
     if(head != NULL)
     {
         Inorder(head->lchild);
-        printf("| %d |\n",head->data);
+        printf("%d\n", head->data);
         Inorder(head->rchild);
     }
+    
 }
 
 void Preorder(PNODE head)
 {
-    if(head != NULL)
+     if(head != NULL)
     {
-        printf("| %d |\n",head->data);
+        printf("%d\n", head->data);
         Preorder(head->lchild);
         Preorder(head->rchild);
     }
@@ -81,13 +106,13 @@ void Postorder(PNODE head)
     {
         Postorder(head->lchild);
         Postorder(head->rchild);
-        printf("| %d |\n",head->data);
-    }
+        printf("%d\n", head->data);
+    }    
 }
 
 int CountNodes(PNODE head)
 {
-    static int iCount = 0;
+    int static iCount = 0;
 
     if(head != NULL)
     {
@@ -95,12 +120,12 @@ int CountNodes(PNODE head)
         CountNodes(head->lchild);
         CountNodes(head->rchild);
     }
-    return iCount;
+        return iCount;
 }
 
 int CountParentNodes(PNODE head)
 {
-    static int iCount = 0;
+    int static iCount = 0;
 
     if(head != NULL)
     {
@@ -111,12 +136,12 @@ int CountParentNodes(PNODE head)
         CountParentNodes(head->lchild);
         CountParentNodes(head->rchild);
     }
-    return iCount;
+        return iCount;
 }
 
 int CountLeafNodes(PNODE head)
 {
-    static int iCount = 0;
+     int static iCount = 0;
 
     if(head != NULL)
     {
@@ -130,74 +155,53 @@ int CountLeafNodes(PNODE head)
     return iCount;
 }
 
-bool Search(PNODE head , int no)
-{
-    bool bFlag = false;
-
-    while(head != NULL)
-    {
-        if(head ->data == no)
-        {
-            bFlag = true;
-            break;
-        }
-        else if(no > head->data)
-        {
-            head = head->rchild;
-        }
-        else if(no < head->data)
-        {
-            head  = head->lchild;
-        }
-
-    }
-    return bFlag;
-}
-
-
-
 int main()
 {
     PNODE first = NULL;
     int iRet = 0;
+    bool bRet = false;
 
-    Insert(&first , 51);
+    Insert(&first , 50);
     Insert(&first , 21);
     Insert(&first , 101);
-    Insert(&first , 10);
-    Insert(&first , 31);
-    Insert(&first , 35);
-    Insert(&first , 65);
+    Insert(&first , 12);
+    Insert(&first , 510);
 
-    printf("Inorder Traversal:\n");
+    printf("Inorder traversal:\n");
     Inorder(first);
-
-    printf("Preorder Traversal:\n");
+    printf("Preorder traversal:\n");
     Preorder(first);
-
-    printf("Postorder Traversal:\n");
+    printf("Postorder traversal:\n");
     Postorder(first);
-    
-    printf("Counting total nodes:\n");
-    iRet = CountNodes(first);
-    printf("%d\n",iRet);
 
-    printf("Counting total Parent nodes:\n");
-    iRet = CountParentNodes(first);
-    printf("%d\n",iRet);
-
-    printf("Counting total Leaf nodes:\n");
-    iRet = CountLeafNodes(first);
-    printf("%d\n",iRet);
-
-    bool bflag = Search(first , 52);
-    if(bflag == true)
-    {
-        printf("Element is present in the tree\n");
+    bRet =  Search(first , 52);
+   if(bRet == true)
+   {
+    printf("element is preset\n");
     }
     else
-    {
-        printf("Element is absent in the tree\n");
+    {        
+    printf("element is absent\n");
     }
-    return 0 ;
+    
+    bRet =  Search(first , 510);
+   if(bRet == true)
+   {
+    printf("element is preset\n");
+    }
+    else
+    {        
+    printf("element is absent\n");
+    }
+
+   iRet =  CountNodes(first);
+   printf("Total no of Nodes are:%d\n",iRet);
+
+   iRet =  CountParentNodes(first);
+   printf("Total no of Parent Nodes are:%d\n",iRet);
+
+   iRet =  CountLeafNodes(first);
+   printf("Total no of leaf Nodes are:%d\n",iRet);
+
+    return 0;
 }
