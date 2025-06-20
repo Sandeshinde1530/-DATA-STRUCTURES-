@@ -78,7 +78,7 @@ class DoublyLL
         
         void InsertAtPos(int no , int iPos)
         {
-            if(iPos < 0 || iPos > iCount + 1)
+            if(iPos < 1 || iPos > iCount + 1)
             {
                 cout<<"Invalid POsition\n";
                 return;
@@ -169,7 +169,7 @@ class DoublyLL
 
         void DeleteAtPos(int iPos)
         {
-             if(iPos < 0 || iPos > iCount)
+             if(iPos < 1 || iPos > iCount)
             {
                 cout<<"Invalid POsition\n";
                 return;
